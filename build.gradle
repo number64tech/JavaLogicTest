@@ -1,0 +1,102 @@
+// UTF-8識別
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+def defaultEncoding = 'UTF-8'
+compileJava.options.encoding = defaultEncoding
+compileTestJava.options.encoding = defaultEncoding
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+    compile 'commons-cli:commons-cli:1.2'
+    compile 'ch.qos.logback:logback-classic:1.1.+'
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.+'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.+'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+  testLogging.showStandardStreams = true                                                             
+}
+
+// ------------------------------------------------------------------------------------------------
+
+// Additional tasks for unit-test.
+
+// testTargetOnly (for 'test')
+// This task clean result everytime, and shows standard-output, and runs target test-class only.
+task testTargetOnly(type: Test, dependsOn: cleanTest) {
+
+    // command sample: xxx> gradle tTO -Ptarget="**/config/*"
+    if (project.hasProperty('target')) {
+        include "${project.target}"
+    }
+    description = 'test(targetOnly)'
+    testClassesDir = sourceSets.test.output.classesDir
+    classpath = sourceSets.test.runtimeClasspath
+    testLogging {
+        events 'started','failed', 'skipped'
+        showStandardStreams = true
+    }
+}
+
+// These are additional sourceset and task for test, depends on 'main' 'test'.
+// Experimental test, heavy test, disruptive... and so on.
+sourceSets {
+    parts {
+        compileClasspath = sourceSets.main.output +
+            configurations.compile +
+            sourceSets.test.output +
+            configurations.testCompile +
+            configurations.partsCompile
+        runtimeClasspath = output + compileClasspath +
+            configurations.testRuntime +
+            configurations.partsRuntime
+    }
+}
+compilePartsJava {
+    options.encoding = 'UTF-8'
+}
+
+// test (for 'parts')
+// This task clean result everytime, and shows standard-output.
+task partsTest(type: Test) {
+    description = 'parts test.'
+    doFirst() {}
+    testClassesDir = sourceSets.parts.output.classesDir
+    classpath = sourceSets.parts.runtimeClasspath
+    testLogging {
+        events 'started','failed', 'skipped'
+        showStandardStreams = true
+    }
+    reports.html.destination = file("${reports.html.destination}/parts")
+    reports.junitXml.destination = file("${reports.junitXml.destination}/parts")
+    doLast() {}
+}
+partsTest.dependsOn cleanPartsTest
+
+// testsingle (for 'parts')
+// This task clean result everytime, and shows standard-output, and runs target-class only.
+task partsTestTargetOnly(type: Test, dependsOn: cleanPartsTest) {
+
+    // command sample: xxx> gradle pTTO -Ptarget="**/config/*"
+    if (project.hasProperty('target')) {
+        include "${project.target}"
+    }
+    description = 'parts test. (target only)'
+    testClassesDir = sourceSets.parts.output.classesDir
+    classpath = sourceSets.parts.runtimeClasspath
+    testLogging {
+        events 'started','failed', 'skipped'
+        showStandardStreams = true
+    }
+}
+
+
+
