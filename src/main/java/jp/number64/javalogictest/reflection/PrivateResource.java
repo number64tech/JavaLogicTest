@@ -25,14 +25,14 @@ public class PrivateResource implements PrivateResourceInterface {
 
     @Override
     public void prepareMessages(String replaceTarget, String replacedWord)
-      throws NullPointerException, ArrayIndexOutOfBoundsException {
+      throws NullPointerException, IndexOutOfBoundsException {
         // check1
         if (this.baseMessages == null) {
             throw new NullPointerException("NullCheck Error. BaseMessages obj is null.");
         }
         // check2
-        if (this.baseMessages.size() == 0) {
-            throw new ArrayIndexOutOfBoundsException("SizeCheck Error. No message is set.");
+        if (this.baseMessages.size() < 2) {
+            throw new IndexOutOfBoundsException("SizeCheck Error. BaseMessage needs two messages.");
         }
         //
         String baseMessage = this.baseMessages.get(BASE_MESSAGE_INDEX);
