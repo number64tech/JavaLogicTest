@@ -1,2 +1,2 @@
-# JavaLogicTest
-Standard (Java) logic and test sample.
+# java-testing
+Standard (Java) test sample.
