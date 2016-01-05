@@ -47,17 +47,14 @@ task testTargetOnly(type: Test, dependsOn: cleanTest) {
     }
 }
 
-// These are additional sourceset and task for test, depends on 'main' 'test'.
+// These are additional sourceset and task for test, depend on 'main'.
 // Experimental test, heavy test, disruptive... and so on.
 sourceSets {
     parts {
         compileClasspath = sourceSets.main.output +
             configurations.compile +
-            sourceSets.test.output +
-            configurations.testCompile +
             configurations.partsCompile
         runtimeClasspath = output + compileClasspath +
-            configurations.testRuntime +
             configurations.partsRuntime
     }
 }
