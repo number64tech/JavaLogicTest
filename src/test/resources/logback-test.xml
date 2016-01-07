@@ -3,7 +3,7 @@
 
     <!-- コンソールのログ出力フォーマット -->
     <property name="CONSOLE_LOG_PATTERN"
-        value="${HOSTNAME:- } ${PID:- } %t %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - %msg%n" />
+        value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{0} - %msg%n" />
 
     <!-- コンソール出力 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
