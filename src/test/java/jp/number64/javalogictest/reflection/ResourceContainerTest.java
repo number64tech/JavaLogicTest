@@ -37,7 +37,7 @@ public class ResourceContainerTest {
     private static final String TEST_NEW_WORD = "123";
 
     /**
-     * show "private static final String" field
+     * This class tests to access "private static final String" field, and to use its value.
      */
     @FixMethodOrder(MethodSorters.NAME_ASCENDING)
     public static final class Pattern01PublicAccessTest {
@@ -79,18 +79,20 @@ public class ResourceContainerTest {
             Class<ResourceContainer> clazz = ResourceContainer.class;
             try {
                 //
-                Field secretField = clazz.getField("SECRET_MESSAGE");
+                Field secretField = clazz.getDeclaredField("SECRET_MESSAGE");
                 secretField.setAccessible(true);
                 secretField.set(null, replacementSecretMessage);
                 //
-                Field typeReverse = clazz.getField("ENCODE_TYPE_REV");
+                Field typeReverse = clazz.getDeclaredField("ENCODE_TYPE_REV");
                 typeReverse.setAccessible(true);
                 String keywordReverse = (String)typeReverse.get(null);
-                Field typeCut = clazz.getField("ENCODE_TYPE_CUT");
+                Field typeCut = clazz.getDeclaredField("ENCODE_TYPE_CUT");
                 typeCut.setAccessible(true);
                 String keywordCut = (String)typeCut.get(null);
                 //
-                Method privateStaticMethod = clazz.getMethod("doPrivateStaticEncode", String.class); // no parameter
+                Method privateStaticMethod = clazz.getDeclaredMethod("doPrivateStaticEncode", String.class); // no parameter
+                privateStaticMethod.setAccessible(true);
+
                 //
                 String resultReverse = (String)privateStaticMethod.invoke(null, keywordReverse);
                 assertEquals(StringUtils.reverse(replacementSecretMessage), resultReverse);
@@ -124,6 +126,7 @@ public class ResourceContainerTest {
             try {
                 Constructor<ResourceContainer> target =
                     clazz.getDeclaredConstructor(String.class, String.class, String.class, int.class);
+                target.setAccessible(true);
                 ResourceContainer instance =
                     target.newInstance(TEST_BASE_MESSAGE, TEST_REPLACE_TARGET, TEST_NEW_WORD, replacementSecretNumber); //autoboxing
                 //
@@ -131,6 +134,10 @@ public class ResourceContainerTest {
                 Field baseMessage = clazz.getDeclaredField("baseMessage");
                 Field replaceTarget = clazz.getDeclaredField("replaceTarget");
                 Field newWord = clazz.getDeclaredField("newWord");
+                secretNumber.setAccessible(true);
+                baseMessage.setAccessible(true);
+                replaceTarget.setAccessible(true);
+                newWord.setAccessible(true);
                 //
                 assertEquals(replacementSecretNumber, secretNumber.getInt(instance));
                 assertEquals(TEST_BASE_MESSAGE, (String)baseMessage.get(instance));
