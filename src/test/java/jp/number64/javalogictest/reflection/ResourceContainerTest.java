@@ -185,7 +185,6 @@ public class ResourceContainerTest {
         @Override
         public void setBaseMessages(List<String> baseMessages) {
             LOGGER.debug(START_LOG, getMethodName(new Throwable()));
-            // TODO 自動生成されたメソッド・スタブ
         }
 
         @Test
@@ -197,7 +196,6 @@ public class ResourceContainerTest {
         @Override
         public List<String> getBaseMessages() {
             LOGGER.debug(START_LOG, getMethodName(new Throwable()));
-            // TODO 自動生成されたメソッド・スタブ
             return null;
         }
 
@@ -210,7 +208,6 @@ public class ResourceContainerTest {
         @Override
         public void prepareMessages(String replaceTarget, String replacedWord) {
             LOGGER.debug(START_LOG, getMethodName(new Throwable()));
-            // TODO 自動生成されたメソッド・スタブ
 
         }
 
@@ -223,7 +220,6 @@ public class ResourceContainerTest {
         @Override
         public String outputMessages() {
             LOGGER.debug(START_LOG, getMethodName(new Throwable()));
-            // TODO 自動生成されたメソッド・スタブ
             return null;
         }
 
